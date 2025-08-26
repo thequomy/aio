@@ -1,0 +1,11 @@
+{
+    "fly": "https://raw.githubusercontent.com/thequomy/aio/main/fly.lua",
+    "esp": "https://raw.githubusercontent.com/thequomy/aio/main/esp.lua",
+    "fling": "https://raw.githubusercontent.com/thequomy/aio/main/fling.lua",
+    "reanim": "https://raw.githubusercontent.com/thequomy/aio/main/reanim.lua",
+    "leak": "https://raw.githubusercontent.com/thequomy/aio/main/leak.lua",
+    "help": "https://raw.githubusercontent.com/thequomy/aio/main/help.lua",
+    "twerk": "https://raw.githubusercontent.com/thequomy/aio/main/twerk.lua",
+    "ugc": "https://raw.githubusercontent.com/thequomy/aio/main/ugc.lua",
+    "car": "https://raw.githubusercontent.com/thequomy/aio/main/car.lua"
+}

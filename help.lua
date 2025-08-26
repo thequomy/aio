@@ -1,0 +1,306 @@
+local env = getgenv()
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+
+local helpModule = {
+    name = "help",
+    gui = nil,
+    isOpen = false,
+    api = env.API,
+
+    UI = function(className, properties, parent)
+        local element = Instance.new(className)
+        for prop, value in pairs(properties) do
+            element[prop] = value
+        end
+        if parent then
+            element.Parent = parent
+        end
+        return element
+    end,
+
+    Corner = function(element, radius)local corner = Instance.new("UICorner")corner.CornerRadius = UDim.new(0, radius or 6)corner.Parent = element return corner end,
+    createGUI = function(self)
+        if self.gui then self.gui:Destroy() end
+        local screenGui = self.UI("ScreenGui", {
+            Name = "HelpUI",
+            ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+            ResetOnSpawn = false,
+            Parent = game:GetService("CoreGui")
+        })
+
+        local mainFrame = self.UI("Frame", {
+            Name = "MainFrame",
+            Size = UDim2.new(0, 300, 0, 380),
+            Position = UDim2.new(0.5, -150, 0.5, -190),
+            BackgroundColor3 = Color3.fromRGB(15, 15, 20),
+            BackgroundTransparency = 0.3,
+            BorderSizePixel = 0,
+            Visible = false,
+            Parent = screenGui
+        })
+        self.Corner(mainFrame, 12)
+
+        local titleBar = self.UI("Frame", {
+            Name = "TitleBar",
+            Size = UDim2.new(1, -2, 0, 40),
+            Position = UDim2.new(0, 1, 0, 0),
+            BackgroundTransparency = 1,
+            Parent = mainFrame
+        })
+
+        local titleLabel = self.UI("TextLabel", {
+            Size = UDim2.new(1, -50, 0, 40),
+            Position = UDim2.new(0, -40, 0, 0),
+            TextXAlignment = Enum.TextXAlignment.Center,
+            BackgroundTransparency = 1,
+            Text = "AIO COMMANDS",
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            TextSize = 18,
+            Font = Enum.Font.GothamBold,
+            Parent = titleBar
+        })
+
+        local closeButton = self.UI("TextButton", {
+            Size = UDim2.new(0, 30, 0, 30),
+            Position = UDim2.new(1, -10, 0, 5),
+            AnchorPoint = Vector2.new(1, 0),
+            BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+            BackgroundTransparency = 1,
+            Text = "×",
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            Font = Enum.Font.GothamBold,
+            TextSize = 25,
+            Parent = titleBar
+        })
+        self.Corner(closeButton, 6)
+
+        local minimizeButton = self.UI("TextButton", {
+            Size = UDim2.new(0, 30, 0, 30),
+            Position = UDim2.new(1, -45, 0, 5),
+            AnchorPoint = Vector2.new(1, 0),
+            BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+            BackgroundTransparency = 1,
+            Text = "−",
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            Font = Enum.Font.GothamBold,
+            TextSize = 24,
+            Parent = titleBar
+        })
+        self.Corner(minimizeButton, 6)
+
+        local contentContainer = self.UI("Frame", {
+            Name = "ContentContainer",
+            Size = UDim2.new(1, 0, 1, -40),
+            Position = UDim2.new(0, 0, 0, 40),
+            BackgroundTransparency = 1,
+            Parent = mainFrame
+        })
+
+        local contentFrame = self.UI("Frame", {
+            Name = "ContentFrame",
+            Size = UDim2.new(1, -20, 1, -45),
+            Position = UDim2.new(0, 10, 0, 10),
+            BackgroundColor3 = Color3.fromRGB(20, 20, 25),
+            BackgroundTransparency = 0.5,
+            Parent = contentContainer
+        })
+        self.Corner(contentFrame, 10)
+
+        local scrollFrame = self.UI("ScrollingFrame", {
+            Name = "CommandsScroll",
+            Size = UDim2.new(1, -10, 1, -10),
+            Position = UDim2.new(0, 5, 0, 5),
+            BackgroundTransparency = 1,
+            ScrollBarThickness = 4,
+            ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255),
+            CanvasSize = UDim2.new(0, 0, 0, 0),
+            Parent = contentFrame
+        })
+        self:populateCommands(scrollFrame)
+        closeButton.MouseButton1Click:Connect(function()self:closeGUI()end)
+        local isMinimized = false
+        minimizeButton.MouseButton1Click:Connect(function()
+            isMinimized = not isMinimized
+            local newHeight = isMinimized and 40 or 380
+            TweenService:Create(mainFrame, TweenInfo.new(0.3), {
+                Size = UDim2.new(0, 300, 0, newHeight)
+            }):Play()
+            if isMinimized then
+                contentContainer.Visible = false
+            else
+                contentContainer.Visible = true
+            end
+            minimizeButton.Text = isMinimized and "+" or "−"
+        end)
+
+        self:makeDraggable(mainFrame, titleBar)
+        self.gui = screenGui
+        self.mainFrame = mainFrame
+        self.scrollFrame = scrollFrame
+        self.contentContainer = contentContainer
+        self.api:addToActive("help_gui", screenGui)
+        self:openGUI()
+    end,
+
+    populateCommands = function(self, parent)
+        for _, child in ipairs(parent:GetChildren()) do
+            if child:IsA("GuiObject") then
+                child:Destroy()
+            end
+        end
+        local commands = self.api:getCommands()
+        local commandList = {}
+
+        for cmdName, cmdData in pairs(commands) do
+            table.insert(commandList, cmdName)
+        end
+
+        table.sort(commandList, function(a, b)
+            return a:lower() < b:lower()
+        end)
+
+        local buttonHeight = 30
+        local buttonSpacing = 5
+        local yOffset = 5
+
+        for _, commandName in ipairs(commandList) do
+            local commandButton = self.UI("TextButton", {
+                Name = commandName,
+                Size = UDim2.new(1, -10, 0, buttonHeight),
+                Position = UDim2.new(0, 5, 0, yOffset),
+                BackgroundColor3 = Color3.fromRGB(25, 25, 35),
+                BackgroundTransparency = 0.2,
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                TextSize = 14,
+                Font = Enum.Font.Gotham,
+                Text = commandName,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                AutoButtonColor = false,
+                Parent = parent
+            })
+            self.Corner(commandButton, 6)
+            local textPadding = self.UI("UIPadding", {
+                PaddingLeft = UDim.new(0, 12),
+                PaddingRight = UDim.new(0, 12),
+                Parent = commandButton
+            })
+
+            local Sound = Instance.new("Sound")
+            Sound.SoundId = "rbxassetid://138445430250193" 
+            Sound.Volume = 0.3
+            Sound.Parent = commandButton
+
+            commandButton.MouseEnter:Connect(function()
+                Sound:Play()
+                TweenService:Create(commandButton, TweenInfo.new(0.15), {
+                    BackgroundColor3 = Color3.fromRGB(35, 35, 45),
+                    BackgroundTransparency = 0.1
+                }):Play()
+                TweenService:Create(commandButton, TweenInfo.new(0.15), {
+                    TextColor3 = Color3.fromRGB(220, 220, 220)
+                }):Play()
+            end)
+
+            commandButton.MouseLeave:Connect(function()
+                TweenService:Create(commandButton, TweenInfo.new(0.2), {
+                    BackgroundColor3 = Color3.fromRGB(25, 25, 35),
+                    BackgroundTransparency = 0.2
+                }):Play()
+                TweenService:Create(commandButton, TweenInfo.new(0.2), {
+                    TextColor3 = Color3.fromRGB(255, 255, 255)
+                }):Play()
+            end)
+
+            commandButton.MouseButton1Click:Connect(function()
+                TweenService:Create(commandButton, TweenInfo.new(0.1), {
+                    BackgroundColor3 = Color3.fromRGB(60, 120, 200),
+                    BackgroundTransparency = 0.1
+                }):Play()
+                task.delay(0.2, function()
+                    TweenService:Create(commandButton, TweenInfo.new(0.3), {
+                        BackgroundColor3 = Color3.fromRGB(25, 25, 35),
+                        BackgroundTransparency = 0.2
+                    }):Play()
+                end)
+
+                if self.api and self.api.moduleExecute then
+                    self.api.moduleExecute:execute(commandName)
+                end
+            end)
+
+            yOffset = yOffset + buttonHeight + buttonSpacing
+        end
+
+        parent.CanvasSize = UDim2.new(0, 0, 0, yOffset)
+    end,
+
+    makeDraggable = function(self, frame, dragHandle)
+        local dragging = false
+        local dragStart = nil
+        local startPos = nil
+
+        dragHandle.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                dragging = true
+                dragStart = input.Position
+                startPos = frame.Position
+            end
+        end)
+
+        UserInputService.InputChanged:Connect(function(input)
+            if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+                local delta = input.Position - dragStart
+                frame.Position = UDim2.new(
+                    startPos.X.Scale,
+                    startPos.X.Offset + delta.X,
+                    startPos.Y.Scale,
+                    startPos.Y.Offset + delta.Y
+                )
+            end
+        end)
+
+        UserInputService.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                dragging = false
+            end
+        end)
+    end,
+
+    openGUI = function(self)
+        if not self.gui then return end
+
+        self.isOpen = true
+        self.mainFrame.Visible = true
+        self.mainFrame.Size = UDim2.new(0, 50, 0, 50)
+        self.mainFrame.Position = UDim2.new(0.5, -25, 0.5, -25)
+
+        TweenService:Create(self.mainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+            Size = UDim2.new(0, 300, 0, 380),
+            Position = UDim2.new(0.5, -150, 0.5, -190)
+        }):Play()
+    end,
+
+    closeGUI = function(self)
+        if not self.gui then return end
+
+        self.isOpen = false
+
+        TweenService:Create(self.mainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+            Size = UDim2.new(0, 50, 0, 50),
+            Position = UDim2.new(0.5, -25, 0.5, -25)
+        }):Play()
+
+        task.spawn(function()
+            task.wait(0.3)
+            self.mainFrame.Visible = false
+            if self.gui then
+                self.gui:Destroy()
+                self.gui = nil
+            end
+        end)
+    end
+}
+
+helpModule:createGUI()
+return helpModule
