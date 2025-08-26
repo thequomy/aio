@@ -7,15 +7,10 @@ local helpModule = {
     gui = nil,
     isOpen = false,
     api = env.API,
-
     UI = function(className, properties, parent)
         local element = Instance.new(className)
-        for prop, value in pairs(properties) do
-            element[prop] = value
-        end
-        if parent then
-            element.Parent = parent
-        end
+        for prop, value in pairs(properties) do element[prop] = value end
+        if parent then element.Parent = parent end
         return element
     end,
 
@@ -144,17 +139,10 @@ local helpModule = {
     end,
 
     populateCommands = function(self, parent)
-        for _, child in ipairs(parent:GetChildren()) do
-            if child:IsA("GuiObject") then
-                child:Destroy()
-            end
-        end
+        for _, child in ipairs(parent:GetChildren()) do if child:IsA("GuiObject") then child:Destroy()end end
         local commands = self.api:getCommands()
         local commandList = {}
-
-        for cmdName, cmdData in pairs(commands) do
-            table.insert(commandList, cmdName)
-        end
+        for cmdName, cmdData in pairs(commands) do table.insert(commandList, cmdName)end
 
         table.sort(commandList, function(a, b)
             return a:lower() < b:lower()
@@ -231,7 +219,6 @@ local helpModule = {
 
             yOffset = yOffset + buttonHeight + buttonSpacing
         end
-
         parent.CanvasSize = UDim2.new(0, 0, 0, yOffset)
     end,
 
@@ -239,7 +226,6 @@ local helpModule = {
         local dragging = false
         local dragStart = nil
         local startPos = nil
-
         dragHandle.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 dragging = true
@@ -247,7 +233,6 @@ local helpModule = {
                 startPos = frame.Position
             end
         end)
-
         UserInputService.InputChanged:Connect(function(input)
             if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
                 local delta = input.Position - dragStart
@@ -269,12 +254,10 @@ local helpModule = {
 
     openGUI = function(self)
         if not self.gui then return end
-
         self.isOpen = true
         self.mainFrame.Visible = true
         self.mainFrame.Size = UDim2.new(0, 50, 0, 50)
         self.mainFrame.Position = UDim2.new(0.5, -25, 0.5, -25)
-
         TweenService:Create(self.mainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
             Size = UDim2.new(0, 300, 0, 380),
             Position = UDim2.new(0.5, -150, 0.5, -190)
@@ -283,14 +266,7 @@ local helpModule = {
 
     closeGUI = function(self)
         if not self.gui then return end
-
         self.isOpen = false
-
-        TweenService:Create(self.mainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
-            Size = UDim2.new(0, 50, 0, 50),
-            Position = UDim2.new(0.5, -25, 0.5, -25)
-        }):Play()
-
         task.spawn(function()
             task.wait(0.3)
             self.mainFrame.Visible = false

@@ -648,7 +648,7 @@ local Reanimation = {
 			Position = UDim2.new(0, -55, 0, 0),
 			TextXAlignment = Enum.TextXAlignment.Center,
 			BackgroundTransparency = 1,
-			Text = "AL REANIM",
+			Text = "AIO REANIM",
 			TextColor3 = Color3.fromRGB(255, 255, 255),
 			TextSize = 20,
 			Font = Enum.Font.GothamBold,
@@ -755,29 +755,6 @@ local Reanimation = {
 			Parent = animationListToggle
 		})
 		self.Corner(animationListKnob, 10)
-		local credits = self.UI("TextLabel", {
-			Name = "credits",
-			Size = UDim2.new(1, -20, -0.1, 15),
-			Position = UDim2.new(0, 10, 0, 65),
-			BackgroundTransparency = 1,
-			Text = "discord.gg/akadmin",
-			TextColor3 = Color3.fromRGB(255, 255, 255),
-			TextSize = 14,
-			Font = Enum.Font.Gotham,
-			TextXAlignment = Enum.TextXAlignment.Center,
-			Parent = contentContainer
-		})
-		local creditsGradient = Instance.new("UIGradient", credits)
-		creditsGradient.Color = ColorSequence.new{
-			ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 69, 0)),
-			ColorSequenceKeypoint.new(0.25, Color3.fromRGB(255, 140, 0)),
-			ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 215, 0)),
-			ColorSequenceKeypoint.new(0.75, Color3.fromRGB(255, 140, 0)),
-			ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 69, 0))
-		}
-		TweenService:Create(creditsGradient, TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1), {
-			Rotation = 360
-		}):Play()
 		self.mainFrame = mainFrame;
 		self.topBar = topBar;
 		self.contentContainer = contentContainer;
