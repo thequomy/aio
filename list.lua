@@ -3,6 +3,7 @@ return{
     ["II belly"] = "https://0x0.st/Kz7P.txt",
     ["lay down J2"] = "https://0x0.st/Kz7Z.txt",
     ["Les"] = "https://0x0.st/Kz7N.txt",
+    ["1test"] = "https://0x0.st/KoG1.lua",
     ["On the knees eating"] = "https://0x0.st/Kz7b.txt",
     ["Sharp Circle twerk"] = "https://0x0.st/Kz7q.txt",
     ["A Loving Present"] = "https://raw.githubusercontent.com/BloxiAstra/Emotes/main/A%20Loving%20Present%2Elua",
@@ -1553,3 +1554,4 @@ return{
     ["Crushing It"] = "https://raw.githubusercontent.com/BloxiAstra/Emotes/main/Crushing%20It%2Elua",
     ["Bugi-Vugi"] = "https://raw.githubusercontent.com/BloxiAstra/Emotes/main/Bugi%2DVugi%2Elua",
 }
+
