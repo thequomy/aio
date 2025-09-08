@@ -1,9 +1,9 @@
 {
-    "fly": "https://raw.githubusercontent.com/thequomy/aio/main/fly.lua",
-    "esp": "https://raw.githubusercontent.com/thequomy/aio/main/esp.lua",
-    "fling": "https://raw.githubusercontent.com/thequomy/aio/main/fling.lua",
-    "reanim": "https://raw.githubusercontent.com/thequomy/aio/main/reanim.lua",
-    "twerk": "https://raw.githubusercontent.com/thequomy/aio/main/twerk.lua",
-    "ugc": "https://raw.githubusercontent.com/thequomy/aio/main/ugc.lua",
-    "car": "https://raw.githubusercontent.com/thequomy/aio/main/car.lua"
+    "fly": "https://github.com/thequomy/aplus/raw/main/fly.lua",
+    "esp": "https://github.com/thequomy/aplus/raw/main/esp.lua",
+    "fling": "https://github.com/thequomy/aplus/raw/main/fling.lua",
+    "reanim": "https://github.com/thequomy/aplus/raw/main/reanim.lua",
+    "twerk": "https://github.com/thequomy/aplus/raw/main/twerk.lua",
+    "ugc": "https://github.com/thequomy/aplus/raw/main/ugc.lua",
+    "car": "https://github.com/thequomy/aplus/raw/main/car.lua"
 }
