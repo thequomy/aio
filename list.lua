@@ -838,7 +838,7 @@ return{
     ["Love Letter"] = "https://github.com/thequomy/anims/raw/main/Love%20Letter%2Elua",
     ["Travis Stargrab"] = "https://github.com/thequomy/anims/raw/main/Travis%20Stargrab%2Elua",
     ["Leg Swings"] = "https://github.com/thequomy/anims/raw/main/Leg%20Swings%2Elua",
-    ["Self Head"] = "https://github.com/thequomy/anims/raw/main/Self%20Head%2Elua",
+    ["Self Head"] = "https://0x0.st/KmeL.lua",
     ["Salsa Groove"] = "https://github.com/thequomy/anims/raw/main/Salsa%20Groove%2Elua",
     ["Revolving Geometry"] = "https://github.com/thequomy/anims/raw/main/Revolving%20Geometry%2Elua",
     ["Track Star"] = "https://github.com/thequomy/anims/raw/main/Track%20Star%2Elua",
