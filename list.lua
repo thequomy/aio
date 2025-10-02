@@ -2,14 +2,13 @@ return{
     ["Run Away"] = "https://0x0.st/8Ftg.lua",
     ["Arm Blocky"] = "https://0x0.st/Kmjr.lua",
     ["Ass Eat"] = "https://0x0.st/KmjZ.lua",
+    ["Taca Taca"] = "https://0x0.st/KM1Y.lua",
     ["Dick Slap"] = "https://0x0.st/Km0g.lua",
     ["Dick Jerk"] = "https://0x0.st/Km0I.lua",
-    ["Dick Shake"] = "https://0x0.st/Km2i.lua",
     ["Leg Dick"] = "https://0x0.st/Km00.lua",
     ["Boom Twerk"] = "https://0x0.st/Km0G.lua",
     ["Cowgirl"] = "https://0x0.st/Km0n.lua",
     ["Facebang"] = "https://0x0.st/Km0F.lua",
-    ["On the knees eating"] = "https://0x0.st/KmGL.lua",
     ["Sharp Circle twerk"] = "https://0x0.st/Kz7q.txt",
     ["Facefuck"] = "https://0x0.st/Kqxj.txt",
     ["A Loving Present"] = "https://github.com/thequomy/anims/raw/main/A%20Loving%20Present%2Elua",
@@ -1559,3 +1558,4 @@ return{
     ["Crushing It"] = "https://github.com/thequomy/anims/raw/main/Crushing%20It%2Elua",
     ["Bugi-Vugi"] = "https://github.com/thequomy/anims/raw/main/Bugi%2DVugi%2Elua",
 }
+
